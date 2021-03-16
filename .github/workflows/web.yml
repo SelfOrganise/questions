@@ -44,3 +44,7 @@ jobs:
           heroku_app_name: "chunkymeat-api"
           appdir: "api"
           buildpack: "heroku/nodejs"
+          justlogin: true
+      - name: force
+        run: git push -u heroku :master
+          
