@@ -1,0 +1,9 @@
+### Config
+
+```
+DB_HOST=
+DB_PORT=
+DB_USER=
+DB_DATABASE=
+DB_PASSWORD=
+```
