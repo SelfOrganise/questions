@@ -1,4 +1,4 @@
-import { makeExecutableSchema } from 'apollo-server';
+import { makeExecutableSchema } from 'apollo-server-express';
 import { personResolvers } from './personResolver';
 import { personTypeDefs } from './personTypeDefs';
 

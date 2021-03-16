@@ -1,11 +1,13 @@
-import { gql, useMutation } from '@apollo/client';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import React, { useCallback } from 'react';
-import { GET_QUESTIONS } from './Questions';
-import { Question } from './types';
+import { gql, useMutation } from "@apollo/client";
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
+import React, { useCallback } from "react";
+import { Centered } from "./Centered";
+import { GET_QUESTIONS } from "./Questions";
+import { Question } from "./types";
+import IconButton from "@material-ui/core/IconButton";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const DELETE_QUESTION = gql`
   mutation addQuestion($id: Int!) {
@@ -18,32 +20,42 @@ export function QuestionRow({ question }: { question: Question }) {
 
   const handleDeleteClick = useCallback(async () => {
     await deleteQuestion({
-      variables: { id: question.id }, update: (cache, { data }) => {
+      variables: { id: question.id },
+      update: (cache, { data }) => {
         if (data.deleteQuestion !== true) {
           return;
         }
 
-        const existingQuestions: any = cache.readQuery({ query: GET_QUESTIONS }) || [];
+        const existingQuestions: any =
+          cache.readQuery({ query: GET_QUESTIONS }) || [];
         cache.writeQuery({
           query: GET_QUESTIONS,
           data: {
-            questions: [...existingQuestions.questions.filter((q: Question) => q.id !== question.id)],
-          }
-        })
-      }
+            questions: [
+              ...existingQuestions.questions.filter(
+                (q: Question) => q.id !== question.id
+              ),
+            ],
+          },
+        });
+      },
     });
-  }, [deleteQuestion, question.id])
+  }, [deleteQuestion, question.id]);
 
   return (
     <TableRow>
-      <TableCell component="th" scope="row">
-        {question.id}
-      </TableCell>
-      <TableCell align="right">{question.content}</TableCell>
-      <TableCell align="right">{question.createdAtUtc}</TableCell>
+      <TableCell align="left">{question.content}</TableCell>
       <TableCell align="right">
-        {loading ? <CircularProgress size="1em"/> : <Button onClick={handleDeleteClick}>Delete</Button>}
+        {loading ? (
+          <Centered>
+            <CircularProgress size="1em" />
+          </Centered>
+        ) : (
+          <IconButton onClick={handleDeleteClick}>
+            <DeleteOutlinedIcon />
+          </IconButton>
+        )}
       </TableCell>
     </TableRow>
-  )
+  );
 }

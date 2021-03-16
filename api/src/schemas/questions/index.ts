@@ -1,4 +1,4 @@
-import { makeExecutableSchema } from 'apollo-server';
+import { makeExecutableSchema } from 'apollo-server-express';
 import { questionResolver } from './questionResolver';
 import { bookTypeDefs } from './questionTypeDefs';
 

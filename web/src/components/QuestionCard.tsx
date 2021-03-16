@@ -1,19 +1,19 @@
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import React from "react";
 
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
   },
   bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -23,14 +23,18 @@ const useStyles = makeStyles({
   },
 });
 
-export function Question() {
+export function QuestionCard() {
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
 
   return (
     <Card className={classes.root}>
       <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
+        <Typography
+          className={classes.title}
+          color="textSecondary"
+          gutterBottom
+        >
           Word of the Day
         </Typography>
         <Typography variant="h5" component="h2">
@@ -41,7 +45,7 @@ export function Question() {
         </Typography>
         <Typography variant="body2" component="p">
           well meaning and kindly.
-          <br/>
+          <br />
           {'"a benevolent smile"'}
         </Typography>
       </CardContent>
@@ -49,5 +53,5 @@ export function Question() {
         <Button size="small">Learn More</Button>
       </CardActions>
     </Card>
-  )
+  );
 }

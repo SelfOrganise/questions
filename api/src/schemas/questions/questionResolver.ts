@@ -1,5 +1,5 @@
 import { addQuestion, deleteQuestion, getQuestions } from '../../repository/questions';
-import { Question, questions } from './data';
+import { Question } from './data';
 
 export const questionResolver = {
   Query: {
