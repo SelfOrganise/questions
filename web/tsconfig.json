@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "/questions",
     "target": "es5",
     "lib": [
       "dom",
