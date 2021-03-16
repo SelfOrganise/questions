@@ -33,12 +33,15 @@ const apolloClient = new ApolloClient({
 
 const theme = createMuiTheme();
 
+// this might be incorrect if initial navigation isn't root of the app
+const url = window.location.origin + window.location.pathname;
+
 function AuthenticatedApp() {
   return (
     <Auth0Provider
       domain="boiculese.auth0.com"
       clientId="9umXUJ235FysjsLWAvJKHE43jN7toi4P"
-      redirectUri={window.location.origin + window.location.pathname}
+      redirectUri={url}
     >
       <ApolloProvider client={apolloClient}>
         <App/>
@@ -63,7 +66,7 @@ function App() {
             Questions
           </Typography>
           {isAuthenticated
-            ? <Button color="inherit" onClick={() => logout({ returnTo: window.location.origin })}>Logout</Button>
+            ? <Button color="inherit" onClick={() => logout({ returnTo: url})}>Logout</Button>
             : <Button color="inherit" onClick={() => loginWithRedirect()}>Login</Button>}
         </Toolbar>
       </AppBar>
