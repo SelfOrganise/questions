@@ -21,6 +21,8 @@ jobs:
         working-directory: web
         run: npm install
       - name: Build
+        env: 
+          REACT_APP_API_URL: "https://bogdbo-questions-api.herokuapp.com/graphql"
         working-directory: web
         run: npm run build
       - name: Deploy 🚀
