@@ -41,7 +41,7 @@ jobs:
         with:
           heroku_api_key: $HEROKU_API_KEY
           heroku_email: $HEROKU_EMAIL
-          heroku_app_name: "chunkymeat-api"
+          heroku_app_name: "bogdbo-questions-api"
           appdir: "api"
           buildpack: "heroku/nodejs"
 
