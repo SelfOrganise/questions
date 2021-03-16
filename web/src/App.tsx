@@ -38,7 +38,7 @@ function AuthenticatedApp() {
     <Auth0Provider
       domain="boiculese.auth0.com"
       clientId="9umXUJ235FysjsLWAvJKHE43jN7toi4P"
-      redirectUri={window.location.origin}
+      redirectUri={window.location.origin + window.location.pathname}
     >
       <ApolloProvider client={apolloClient}>
         <App/>
