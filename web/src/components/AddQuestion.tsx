@@ -9,6 +9,9 @@ const ADD_QUESTION = gql`
   mutation addQuestion($content: String!) {
     addQuestion(content: $content) {
       id
+      content
+      createdBy
+      createdAtUtc
     }
   }
 `;
@@ -16,35 +19,34 @@ const ADD_QUESTION = gql`
 export function AddQuestion() {
   const [text, setText] = useState("");
 
-  const [addQuestion, { error: submitError }] = useMutation(ADD_QUESTION);
+  const [addQuestion, { error: submitError, loading }] = useMutation(
+    ADD_QUESTION
+  );
 
   const handleOnClick = useCallback(async () => {
+    setText("");
     await addQuestion({
       variables: {
         content: text,
       },
       optimisticResponse: {
+        __typename: "Mutation",
         addQuestion: {
-          __type: "Question",
-          id: -1,
+          __typename: "Question",
+          id: -Math.floor(Math.random() * 10000),
           content: text,
           createdBy: -1,
-          createdAtUtc: "unknown",
+          createdAtUtc: "",
         },
       },
       update: (cache, { data }) => {
-        const existingQuestions: any =
-          cache.readQuery({ query: GET_QUESTIONS }) || [];
+        const query: any = cache.readQuery({ query: GET_QUESTIONS });
         cache.writeQuery({
           query: GET_QUESTIONS,
-          data: {
-            questions: [...existingQuestions.questions, data.addQuestion],
-          },
+          data: { questions: [data.addQuestion, ...query.questions] },
         });
       },
     });
-
-    setText("");
   }, [addQuestion, text, setText]);
 
   return (
@@ -58,7 +60,12 @@ export function AddQuestion() {
         onChange={(ev) => setText(ev.target.value)}
       />
       <Box marginTop="10px" display="flex" justifyContent="flex-end">
-        <Button variant="contained" color="primary" onClick={handleOnClick}>
+        <Button
+          disabled={text.length === 0 || loading}
+          variant="contained"
+          color="primary"
+          onClick={handleOnClick}
+        >
           Add question
         </Button>
       </Box>

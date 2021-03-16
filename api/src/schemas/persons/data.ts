@@ -5,11 +5,11 @@ export interface Person {
 
 export const persons: Person[] = [
   {
-    name: 'Bogdan Boiculese',
-    age: 29
+    name: "Bogdan Boiculese",
+    age: 29,
   },
   {
-    name: 'Xing Cheng Yang',
-    age: 33
+    name: "Xing Cheng Yang",
+    age: 33,
   },
-]
+];

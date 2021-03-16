@@ -1,10 +1,12 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import { Auth0Provider } from "@auth0/auth0-react";
 import {
-  createMuiTheme,
-  makeStyles,
-  ThemeProvider,
-} from "@material-ui/core/styles";
+  ApolloClient,
+  ApolloProvider,
+  createHttpLink,
+  InMemoryCache,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { Auth0Context, Auth0Provider, useAuth0 } from '@auth0/auth0-react';
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
@@ -13,9 +15,21 @@ import App from "./App";
 // this might be incorrect if initial navigation isn't root of the app
 const url = window.location.origin + window.location.pathname;
 
-const apolloClient = new ApolloClient({
+const httpLink = createHttpLink({
   uri: process.env.REACT_APP_API_URL,
+});
+
+const authLink = setContext((_, { headers }) => {
+  return {
+    headers: {
+      ...headers,
+    },
+  };
+});
+
+const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
+  link: authLink.concat(httpLink),
 });
 
 const theme = createMuiTheme();
@@ -25,6 +39,7 @@ ReactDOM.render(
     <Auth0Provider
       domain="boiculese.auth0.com"
       clientId="9umXUJ235FysjsLWAvJKHE43jN7toi4P"
+      audience="https://bogdbo-questions-api.herokuapp.com"
       redirectUri={url}
     >
       <ApolloProvider client={apolloClient}>

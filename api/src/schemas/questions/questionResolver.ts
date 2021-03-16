@@ -1,5 +1,9 @@
-import { addQuestion, deleteQuestion, getQuestions } from '../../repository/questions';
-import { Question } from './data';
+import {
+  addQuestion,
+  deleteQuestion,
+  getQuestions,
+} from "../../repository/questions";
+import { Question } from "./data";
 
 export const questionResolver = {
   Query: {
@@ -20,6 +24,6 @@ export const questionResolver = {
 
     deleteQuestion: async (_: unknown, args: { id: number }) => {
       return await deleteQuestion(args.id);
-    }
-  }
+    },
+  },
 };

@@ -3,7 +3,6 @@ import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import React, { useCallback } from "react";
-import { Centered } from "./Centered";
 import { GET_QUESTIONS } from "./Questions";
 import { Question } from "./types";
 import IconButton from "@material-ui/core/IconButton";
@@ -26,13 +25,18 @@ export function QuestionRow({ question }: { question: Question }) {
           return;
         }
 
-        const existingQuestions: any =
+        const getQuestionsQuery: any =
           cache.readQuery({ query: GET_QUESTIONS }) || [];
+
+        if (!getQuestionsQuery.questions) {
+          return;
+        }
+
         cache.writeQuery({
           query: GET_QUESTIONS,
           data: {
             questions: [
-              ...existingQuestions.questions.filter(
+              ...getQuestionsQuery.questions.filter(
                 (q: Question) => q.id !== question.id
               ),
             ],
@@ -42,19 +46,15 @@ export function QuestionRow({ question }: { question: Question }) {
     });
   }, [deleteQuestion, question.id]);
 
+  const canDelete = !loading && question.id >= 0;
+
   return (
     <TableRow>
       <TableCell align="left">{question.content}</TableCell>
       <TableCell align="right">
-        {loading ? (
-          <Centered>
-            <CircularProgress size="1em" />
-          </Centered>
-        ) : (
-          <IconButton onClick={handleDeleteClick}>
-            <DeleteOutlinedIcon />
-          </IconButton>
-        )}
+        <IconButton disabled={!canDelete} onClick={handleDeleteClick}>
+          {canDelete ? <DeleteOutlinedIcon /> : <CircularProgress size="1em" />}
+        </IconButton>
       </TableCell>
     </TableRow>
   );

@@ -1,11 +1,11 @@
-import { gql } from 'apollo-server-express';
+import { gql } from "apollo-server-express";
 
 export const bookTypeDefs = gql`
   type Question {
     id: Int
     content: String
     createdBy: Int
-    createdAtUtc: Int
+    createdAtUtc: String
   }
 
   type Query {

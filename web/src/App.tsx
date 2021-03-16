@@ -33,7 +33,6 @@ function App() {
     logout,
     loginWithRedirect,
     isAuthenticated,
-    user,
     isLoading,
   } = useAuth0();
 
@@ -45,12 +44,9 @@ function App() {
             Questions
           </Typography>
           {isAuthenticated ? (
-            <>
-              <Typography variant="body1">Hello {user.email}</Typography>
-              <Button color="inherit" onClick={() => logout({ returnTo: url })}>
-                Logout
-              </Button>
-            </>
+            <Button color="inherit" onClick={() => logout({ returnTo: url })}>
+              Logout
+            </Button>
           ) : (
             <Button
               variant="outlined"
