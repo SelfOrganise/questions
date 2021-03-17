@@ -7,9 +7,9 @@ import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { url } from '../index';
+import { url } from "../index";
 
 const useStyles = makeStyles((theme) => ({
   tabs: {
@@ -22,8 +22,12 @@ const useStyles = makeStyles((theme) => ({
 
 export function AppBar() {
   const { logout, loginWithRedirect, isAuthenticated } = useAuth0();
-  const [currentTab, setCurrentTab] = React.useState("/");
   const history = useHistory();
+  const [currentTab, setCurrentTab] = React.useState("/");
+
+  useEffect(() => {
+    setCurrentTab(history.location.pathname);
+  }, [history]);
 
   const classes = useStyles();
 

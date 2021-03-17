@@ -1,15 +1,16 @@
 import {
   GameQuestion,
   QuestionEntity,
-} from "../schemas/questions/questionTypeDefs";
-import { pool } from "./db";
+} from '../schemas/questions/questionTypeDefs';
+import { pool } from './db';
 
 export async function getQuestions(
   userId: number
 ): Promise<Array<QuestionEntity>> {
   const client = await pool.connect();
   const result = await client.query(
-    `SELECT * from questions 
+    `SELECT *
+     from questions
      where "createdBy" = $1
      order by "createdAtUtc" desc`,
     [userId]
@@ -37,7 +38,10 @@ export async function deleteQuestion(
 ): Promise<boolean> {
   const client = await pool.connect();
   const result = await client.query(
-    `delete from questions where id = $1 and "createdBy" = $2`,
+    `delete
+     from questions
+     where id = $1
+       and "createdBy" = $2`,
     [id, currentUserId]
   );
   await client.release();
@@ -47,10 +51,16 @@ export async function deleteQuestion(
 export async function getRandomQuestion(): Promise<GameQuestion> {
   const client = await pool.connect();
   const result = await client.query(
-    `select q.id, q.content, q."createdAtUtc" from questions q
-     inner join users u on q."createdBy" = u.id
-     left join completed_questions cq on q.id = cq."questionId"
-     where "questionId" is null`
+    `with filtered_questions as (
+        select q.id, q.content, q."createdAtUtc"
+        from questions q
+                 inner join users u on q."createdBy" = u.id
+                 left join completed_questions cq on q.id = cq."questionId"
+        where "questionId" is null)
+     SELECT *
+     FROM filtered_questions
+     offset floor(random() * (select count(*) from filtered_questions)) limit 1
+    `
   );
   const question = result.rows[0];
   if (question) {

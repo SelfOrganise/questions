@@ -10,7 +10,7 @@ import React from "react";
 import { Centered } from "../components/Centered";
 
 const RANDOM_QUESTION = gql`
-  query {
+  query getRandomQuestion {
     randomQuestion {
       id
       content
@@ -27,9 +27,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export function PlayPage() {
-  const { data, loading, refetch, error } = useQuery(RANDOM_QUESTION, {
-    fetchPolicy: "network-only",
-  });
+  const { data, loading, refetch, error } = useQuery(RANDOM_QUESTION);
   const question = data?.randomQuestion;
   const classes = useStyles();
   return (

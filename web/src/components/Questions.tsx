@@ -13,7 +13,7 @@ import { QuestionRow } from "./QuestionRow";
 import { Question } from "./types";
 
 export const GET_QUESTIONS = gql`
-  query questions {
+  query getQuestions {
     questions {
       id
       content

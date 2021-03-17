@@ -20,10 +20,10 @@ function App() {
         {isAuthenticated && (
           <AuthenticatedApolloProvider>
             <Switch>
-              <Route path="/play">
+              <Route exact={true} path="/play">
                 <PlayPage />
               </Route>
-              <Route path="/">
+              <Route exact={true} path="/">
                 <ManageQuestionsPage />
               </Route>
             </Switch>
