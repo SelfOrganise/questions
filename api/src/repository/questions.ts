@@ -29,6 +29,5 @@ export async function deleteQuestion(id: number): Promise<boolean> {
     id,
   ]);
   await client.release();
-  console.log({ rowCount: result.rowCount });
   return result.rowCount > 0;
 }

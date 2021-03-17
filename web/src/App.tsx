@@ -9,6 +9,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
 import { AddQuestion } from "./components/AddQuestion";
+import { AuthenticatedApolloProvider } from './components/AuthenticatedApolloProvider';
 import { Centered } from "./components/Centered";
 import { Questions } from "./components/Questions";
 
@@ -29,12 +30,7 @@ const url = window.location.origin + window.location.pathname;
 
 function App() {
   const classes = useStyles();
-  const {
-    logout,
-    loginWithRedirect,
-    isAuthenticated,
-    isLoading,
-  } = useAuth0();
+  const { logout, loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
 
   return (
     <>
@@ -60,10 +56,12 @@ function App() {
       </AppBar>
       <Container maxWidth="md" className="App">
         {isAuthenticated && (
-          <Box padding={5}>
-            <AddQuestion />
-            <Questions />
-          </Box>
+          <AuthenticatedApolloProvider>
+            <Box padding={5}>
+              <AddQuestion />
+              <Questions />
+            </Box>
+          </AuthenticatedApolloProvider>
         )}
         {isLoading && (
           <Centered>
