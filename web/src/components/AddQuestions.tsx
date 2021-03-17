@@ -6,48 +6,44 @@ import React, { useCallback, useState } from "react";
 import { GET_QUESTIONS } from "./Questions";
 
 const ADD_QUESTION = gql`
-  mutation addQuestion($content: String!) {
-    addQuestion(content: $content) {
+  mutation addQuestions($questions: [String!]) {
+    addQuestions(questions: $questions) {
       id
       content
-      createdBy
       createdAtUtc
+      createdBy
     }
   }
 `;
 
-export function AddQuestion() {
+export function AddQuestions() {
   const [text, setText] = useState("");
 
-  const [addQuestion, { error: submitError, loading }] = useMutation(
+  const [addQuestions, { error: submitError, loading }] = useMutation(
     ADD_QUESTION
   );
 
   const handleOnClick = useCallback(async () => {
     setText("");
-    await addQuestion({
+    const questions = text.split("\n").filter((q) => q && q.length > 0);
+
+    await addQuestions({
       variables: {
-        content: text,
+        questions,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        addQuestion: {
-          __typename: "Question",
-          id: -Math.floor(Math.random() * 10000),
-          content: text,
-          createdBy: -1,
-          createdAtUtc: "",
-        },
+        addQuestions: questions.map((text) => toOptimisticResponse(text)),
       },
       update: (cache, { data }) => {
         const query: any = cache.readQuery({ query: GET_QUESTIONS });
         cache.writeQuery({
           query: GET_QUESTIONS,
-          data: { questions: [data.addQuestion, ...query.questions] },
+          data: { questions: [...data.addQuestions, ...query.questions] },
         });
       },
     });
-  }, [addQuestion, text, setText]);
+  }, [addQuestions, text, setText]);
 
   return (
     <Box display="flex" flexDirection="column">
@@ -72,4 +68,14 @@ export function AddQuestion() {
       <span>{submitError ? submitError.message : ""}</span>
     </Box>
   );
+}
+
+function toOptimisticResponse(text: string) {
+  return {
+    __typename: "Question",
+    id: -Math.floor(Math.random() * 100000000),
+    content: text,
+    createdBy: -1,
+    createdAtUtc: "",
+  };
 }

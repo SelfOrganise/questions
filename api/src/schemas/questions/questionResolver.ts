@@ -1,11 +1,5 @@
-import { ForbiddenError } from "apollo-server-express";
-import {
-  addQuestion,
-  deleteQuestion,
-  getQuestions,
-  getRandomQuestion,
-} from "../../repository/questions";
-import { QuestionEntity } from "./questionTypeDefs";
+import { ForbiddenError } from 'apollo-server-express';
+import { addQuestions, deleteQuestion, getQuestions, getRandomQuestion, } from '../../repository/questions';
 
 export const questionResolver = {
   Query: {
@@ -23,17 +17,17 @@ export const questionResolver = {
   },
 
   Mutation: {
-    addQuestion: async (
+    addQuestions: async (
       _: never,
-      args: { content: string },
+      args: { questions: Array<string> },
       { currentUserId }
     ) => {
-      const newQuestion: Partial<QuestionEntity> = {
+      const newQuestions = args.questions.map((q) => ({
         createdBy: currentUserId,
-        content: args.content,
-      };
+        content: q,
+      }));
 
-      return await addQuestion(newQuestion);
+      return await addQuestions(newQuestions);
     },
 
     deleteQuestion: async (

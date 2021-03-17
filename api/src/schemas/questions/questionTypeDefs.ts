@@ -14,13 +14,17 @@ export const bookTypeDefs = gql`
     createdAtUtc: String
   }
 
+  type AddQuestionsResult {
+    questions: [Question]
+  }
+
   type Query {
     questions(content: String): [Question]
     randomQuestion: GameQuestion
   }
 
   type Mutation {
-    addQuestion(content: String!): Question
+    addQuestions(questions: [String!]): [Question]
     deleteQuestion(id: Int!): Boolean
   }
 `;

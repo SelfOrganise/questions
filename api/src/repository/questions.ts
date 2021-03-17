@@ -1,8 +1,8 @@
 import {
   GameQuestion,
   QuestionEntity,
-} from '../schemas/questions/questionTypeDefs';
-import { pool } from './db';
+} from "../schemas/questions/questionTypeDefs";
+import { pool } from "./db";
 
 export async function getQuestions(
   userId: number
@@ -19,17 +19,22 @@ export async function getQuestions(
   return result.rows;
 }
 
-export async function addQuestion(
-  question: Partial<QuestionEntity>
-): Promise<QuestionEntity> {
+export async function addQuestions(
+  questions: Array<Partial<QuestionEntity>>
+): Promise<Array<QuestionEntity>> {
+  const insertedQuestions = [];
   const client = await pool.connect();
-  const result = await client.query(
-    'insert into questions("content", "createdBy") values ($1, $2) returning *',
-    [question.content, question.createdBy]
-  );
+  for (const question of questions) {
+    const result = await client.query(
+      'insert into questions("content", "createdBy") values ($1, $2) returning *',
+      [question.content, question.createdBy]
+    );
+
+    insertedQuestions.push(result.rows[0]);
+  }
 
   await client.release();
-  return result.rows[0];
+  return insertedQuestions;
 }
 
 export async function deleteQuestion(
