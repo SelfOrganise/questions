@@ -25,12 +25,11 @@ const server = new ApolloServer({
   tracing: process.env.NODE_ENV !== "production",
   context: async ({ req }) => {
     let currentUserId = -1;
-    if (req?.user?.sub) {
+    if (req.user.sub) {
       currentUserId = await getOrCreateUser(req.user.sub);
     }
 
-    console.log({ user: req.user });
-    return { currentUserId };
+    return { currentUserId, user: req.user };
   },
 });
 server.applyMiddleware({ app });

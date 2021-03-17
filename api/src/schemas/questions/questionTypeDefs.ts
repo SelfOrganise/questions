@@ -8,8 +8,15 @@ export const bookTypeDefs = gql`
     createdAtUtc: String
   }
 
+  type GameQuestion {
+    id: Int
+    content: String
+    createdAtUtc: String
+  }
+
   type Query {
     questions(content: String): [Question]
+    randomQuestion: GameQuestion
   }
 
   type Mutation {
@@ -17,3 +24,16 @@ export const bookTypeDefs = gql`
     deleteQuestion(id: Int!): Boolean
   }
 `;
+
+export interface GameQuestion {
+  id: number;
+  content: string;
+  createdAtUtc: string;
+}
+
+export interface QuestionEntity {
+  id: number;
+  createdBy: number;
+  content: string;
+  createdAtUtc: string;
+}

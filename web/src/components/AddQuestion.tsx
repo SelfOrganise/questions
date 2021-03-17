@@ -54,7 +54,7 @@ export function AddQuestion() {
       <TextField
         variant="outlined"
         multiline={true}
-        rows={3}
+        rows={5}
         label="Type in a new question"
         value={text}
         onChange={(ev) => setText(ev.target.value)}

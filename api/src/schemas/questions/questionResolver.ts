@@ -1,25 +1,34 @@
-import { IResolverObject } from "apollo-server-express";
+import { ForbiddenError } from "apollo-server-express";
 import {
   addQuestion,
   deleteQuestion,
   getQuestions,
+  getRandomQuestion,
 } from "../../repository/questions";
-import { Question } from "./data";
+import { QuestionEntity } from "./questionTypeDefs";
 
 export const questionResolver = {
   Query: {
-    questions: async (_: unknown, args: unknown, { currentUserId }) => {
+    questions: async (_: never, args: never, { currentUserId }) => {
       return await getQuestions(currentUserId);
+    },
+
+    randomQuestion: async (parent: never, args: never, context: any) => {
+      if (!context.user.permissions.includes("start:questions")) {
+        throw new ForbiddenError("You do not have permissions to access this");
+      }
+
+      return await getRandomQuestion();
     },
   },
 
   Mutation: {
     addQuestion: async (
-      _: unknown,
+      _: never,
       args: { content: string },
       { currentUserId }
     ) => {
-      const newQuestion: Partial<Question> = {
+      const newQuestion: Partial<QuestionEntity> = {
         createdBy: currentUserId,
         content: args.content,
       };
@@ -28,7 +37,7 @@ export const questionResolver = {
     },
 
     deleteQuestion: async (
-      _: unknown,
+      _: never,
       args: { id: number },
       { currentUserId }
     ) => {

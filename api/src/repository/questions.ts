@@ -1,7 +1,12 @@
-import { Question } from "../schemas/questions/data";
+import {
+  GameQuestion,
+  QuestionEntity,
+} from "../schemas/questions/questionTypeDefs";
 import { pool } from "./db";
 
-export async function getQuestions(userId: number): Promise<Array<Question>> {
+export async function getQuestions(
+  userId: number
+): Promise<Array<QuestionEntity>> {
   const client = await pool.connect();
   const result = await client.query(
     `SELECT * from questions 
@@ -14,8 +19,8 @@ export async function getQuestions(userId: number): Promise<Array<Question>> {
 }
 
 export async function addQuestion(
-  question: Partial<Question>
-): Promise<Question> {
+  question: Partial<QuestionEntity>
+): Promise<QuestionEntity> {
   const client = await pool.connect();
   const result = await client.query(
     'insert into questions("content", "createdBy") values ($1, $2) returning *',
@@ -37,4 +42,25 @@ export async function deleteQuestion(
   );
   await client.release();
   return result.rowCount > 0;
+}
+
+export async function getRandomQuestion(): Promise<GameQuestion> {
+  const client = await pool.connect();
+  const result = await client.query(
+    `select q.id, q.content, q."createdAtUtc" from questions q
+     inner join users u on q."createdBy" = u.id
+     left join completed_questions cq on q.id = cq."questionId"
+     where "questionId" is null`
+  );
+  const question = result.rows[0];
+  if (question) {
+    await client.query(
+      `insert into completed_questions("questionId")
+       values ($1)`,
+      [question.id]
+    );
+  }
+  await client.release();
+
+  return question;
 }
