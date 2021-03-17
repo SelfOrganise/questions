@@ -21,7 +21,7 @@ ReactDOM.render(
       redirectUri={url}
     >
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
+        <BrowserRouter basename={process.env.REACT_APP_BASENAME}>
           <App />
         </BrowserRouter>
       </ThemeProvider>
