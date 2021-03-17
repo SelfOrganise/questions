@@ -1,3 +1,4 @@
+import { IResolverObject } from "apollo-server-express";
 import {
   addQuestion,
   deleteQuestion,
@@ -7,7 +8,11 @@ import { Question } from "./data";
 
 export const questionResolver = {
   Query: {
-    questions: async (_: unknown, args: { content: string }) => {
+    questions: async (_: unknown, args: { content: string }, context, info) => {
+      console.log({
+        user: context.user,
+      });
+
       return await getQuestions();
     },
   },

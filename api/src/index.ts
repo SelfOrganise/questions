@@ -2,7 +2,6 @@ import { ApolloServer } from "apollo-server-express";
 import * as express from "express";
 import { schema } from "./schemas";
 import * as jwt from "express-jwt";
-import * as jwtAuthz from "express-jwt-authz";
 import * as jwksRsa from "jwks-rsa";
 
 const checkJwt = jwt({
@@ -23,6 +22,7 @@ app.use(checkJwt);
 const server = new ApolloServer({
   schema,
   tracing: process.env.NODE_ENV !== "production",
+  context: ({ req }) => ({ user: req.user }),
 });
 server.applyMiddleware({ app });
 
