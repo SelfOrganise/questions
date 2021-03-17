@@ -10,9 +10,6 @@ import { Centered } from "./components/Centered";
 import { ManageQuestionsPage } from "./pages/ManageQuestionsPage";
 import { PlayPage } from "./pages/PlayPage";
 
-// this might be incorrect if initial navigation isn't root of the app
-export const url = window.location.origin + window.location.pathname;
-
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
 

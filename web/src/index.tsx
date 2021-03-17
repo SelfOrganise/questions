@@ -6,8 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import ReactDOM from "react-dom";
 
-// this might be incorrect if initial navigation isn't root of the app
-const url = window.location.origin + window.location.pathname;
+export const url = window.location.origin + process.env.REACT_APP_BASENAME;
 
 const theme = createMuiTheme();
 
@@ -21,7 +20,7 @@ ReactDOM.render(
       redirectUri={url}
     >
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
+        <BrowserRouter basename={process.env.REACT_APP_BASENAME}>
           <App />
         </BrowserRouter>
       </ThemeProvider>

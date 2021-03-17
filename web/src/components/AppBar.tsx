@@ -9,7 +9,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { url } from "../App";
+import { url } from '../index';
 
 const useStyles = makeStyles((theme) => ({
   tabs: {
