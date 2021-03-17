@@ -16,6 +16,7 @@ ReactDOM.render(
       domain="boiculese.auth0.com"
       clientId="9umXUJ235FysjsLWAvJKHE43jN7toi4P"
       audience="https://bogdbo-questions-api.herokuapp.com"
+      scope="start:questions"
       redirectUri={url}
     >
       <ThemeProvider theme={theme}>

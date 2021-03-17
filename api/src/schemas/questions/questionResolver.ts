@@ -8,27 +8,31 @@ import { Question } from "./data";
 
 export const questionResolver = {
   Query: {
-    questions: async (_: unknown, args: { content: string }, context, info) => {
-      console.log({
-        user: context.user,
-      });
-
-      return await getQuestions();
+    questions: async (_: unknown, args: unknown, { currentUserId }) => {
+      return await getQuestions(currentUserId);
     },
   },
 
   Mutation: {
-    addQuestion: async (_: unknown, args: { content: string }) => {
+    addQuestion: async (
+      _: unknown,
+      args: { content: string },
+      { currentUserId }
+    ) => {
       const newQuestion: Partial<Question> = {
-        createdBy: 1,
+        createdBy: currentUserId,
         content: args.content,
       };
 
       return await addQuestion(newQuestion);
     },
 
-    deleteQuestion: async (_: unknown, args: { id: number }) => {
-      return await deleteQuestion(args.id);
+    deleteQuestion: async (
+      _: unknown,
+      args: { id: number },
+      { currentUserId }
+    ) => {
+      return await deleteQuestion(args.id, currentUserId);
     },
   },
 };

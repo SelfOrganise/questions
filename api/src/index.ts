@@ -1,5 +1,6 @@
 import { ApolloServer } from "apollo-server-express";
 import * as express from "express";
+import { getOrCreateUser } from "./repository/users";
 import { schema } from "./schemas";
 import * as jwt from "express-jwt";
 import * as jwksRsa from "jwks-rsa";
@@ -22,7 +23,15 @@ app.use(checkJwt);
 const server = new ApolloServer({
   schema,
   tracing: process.env.NODE_ENV !== "production",
-  context: ({ req }) => ({ user: req.user }),
+  context: async ({ req }) => {
+    let currentUserId = -1;
+    if (req?.user?.sub) {
+      currentUserId = await getOrCreateUser(req.user.sub);
+    }
+
+    console.log({ user: req.user });
+    return { currentUserId };
+  },
 });
 server.applyMiddleware({ app });
 
