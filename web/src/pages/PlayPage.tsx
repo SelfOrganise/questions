@@ -113,6 +113,7 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flex: "1 1 auto",
     alignItems: "center",
+    justifyContent: "center",
   },
   date: {
     display: "flex",
