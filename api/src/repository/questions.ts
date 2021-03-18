@@ -54,7 +54,9 @@ export async function deleteQuestion(
   return result.rowCount > 0;
 }
 
-export async function getRandomQuestion(): Promise<GameQuestion> {
+export async function getRandomQuestion(
+  currentUserId: number
+): Promise<GameQuestion> {
   const client = await pool.connect();
   const result = await client.query(
     `with filtered_questions as (
@@ -71,9 +73,9 @@ export async function getRandomQuestion(): Promise<GameQuestion> {
   const question = result.rows[0];
   if (question) {
     await client.query(
-      `insert into completed_questions("questionId")
-       values ($1)`,
-      [question.id]
+      `insert into completed_questions("questionId", "completedBy")
+       values ($1, $2)`,
+      [question.id, currentUserId]
     );
   }
   await client.release();

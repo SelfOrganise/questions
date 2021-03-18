@@ -1,5 +1,10 @@
-import { ForbiddenError } from 'apollo-server-express';
-import { addQuestions, deleteQuestion, getQuestions, getRandomQuestion, } from '../../repository/questions';
+import { ForbiddenError } from "apollo-server-express";
+import {
+  addQuestions,
+  deleteQuestion,
+  getQuestions,
+  getRandomQuestion,
+} from "../../repository/questions";
 
 export const questionResolver = {
   Query: {
@@ -7,12 +12,16 @@ export const questionResolver = {
       return await getQuestions(currentUserId);
     },
 
-    randomQuestion: async (parent: never, args: never, context: any) => {
-      if (!context.user.permissions.includes("start:questions")) {
+    randomQuestion: async (
+      parent: never,
+      args: never,
+      { user, currentUserId }: any
+    ) => {
+      if (!user.permissions.includes("start:questions")) {
         throw new ForbiddenError("You do not have permissions to access this");
       }
 
-      return await getRandomQuestion();
+      return await getRandomQuestion(currentUserId);
     },
   },
 
