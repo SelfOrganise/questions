@@ -7,7 +7,9 @@ export function Welcome() {
   const auth = useAuth0();
   return (
     <Box marginBottom="10px">
-      <Typography variant="h6">Welcome {auth.user.name} 👋</Typography>
+      <Typography variant="h6">
+        Welcome {auth.user.name?.split("@")[0]} 👋
+      </Typography>
     </Box>
   );
 }
