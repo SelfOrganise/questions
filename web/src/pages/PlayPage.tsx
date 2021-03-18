@@ -1,16 +1,17 @@
 import { gql, useLazyQuery } from "@apollo/client";
+import { Fade, Typography } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import React from "react";
 import { Centered } from "../components/Centered";
+import { ErrorMessage } from "../components/PlayPage/ErrorMessage";
+import { NoQuestionsLeft } from "../components/PlayPage/NoQuestionsLeft";
+import { NotStarted } from "../components/PlayPage/NotStarted";
+import { toRelativeTime } from "../utilities/time";
 
 const RANDOM_QUESTION = gql`
   query getRandomQuestion {
@@ -23,13 +24,6 @@ const RANDOM_QUESTION = gql`
   }
 `;
 
-const useStyles = makeStyles(() => ({
-  nextQuestion: {
-    marginTop: "15px",
-    width: "100%",
-  },
-}));
-
 export function PlayPage() {
   const [getRandomQuestion, { data, loading, error, called }] = useLazyQuery(
     RANDOM_QUESTION,
@@ -40,37 +34,50 @@ export function PlayPage() {
 
   const question = data?.randomQuestion;
   const classes = useStyles();
+
+  if (!called) {
+    return <NotStarted onClick={getRandomQuestion} />;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error.message} />;
+  }
+
+  if (called && !loading && !question) {
+    return <NoQuestionsLeft />;
+  }
+
   return (
-    <Box padding={5}>
-      <Grow in={true}>
-        <Card key={question?.id}>
-          <CardHeader
-            title={<Typography>{question?.createdByName}</Typography>}
-          />
-          <CardMedia>👍️</CardMedia>
-          <CardContent>
-            {loading && (
-              <Centered marginTop={0}>
-                <CircularProgress />
-              </Centered>
-            )}
-            {!loading && !error && (
-              <Box textAlign="center">
-                {called && !question && (
-                  <Typography>No questions left 😿</Typography>
-                )}
-                {question && <Typography>{question.content}</Typography>}
-                {!called && (
-                  <Typography>
-                    Start by pressing the 'Next question' button
-                  </Typography>
-                )}
+    <Box paddingTop={4} paddingLeft={2} paddingRight={2}>
+      {loading && (
+        <Centered className={classes.paper} marginTop={0}>
+          <CircularProgress />
+        </Centered>
+      )}
+      {!loading && question && (
+        <Grow timeout={1000} in={true}>
+          <Fade timeout={1000} in={true}>
+            <Paper className={classes.paper} elevation={4}>
+              <Box
+                height="100%"
+                display="flex"
+                flexDirection="column"
+                flexGrow="1"
+              >
+                <Typography className={classes.date} variant="overline">
+                  {toRelativeTime(question.createdAtUtc)} ago
+                </Typography>
+                <Box className={classes.questionContainer}>
+                  <span className={classes.question}>{question.content}</span>
+                </Box>
+                <Typography className={classes.author} variant="caption">
+                  {question.createdByName}
+                </Typography>
               </Box>
-            )}
-            {error && <Typography color="error">{error.message}</Typography>}
-          </CardContent>
-        </Card>
-      </Grow>
+            </Paper>
+          </Fade>
+        </Grow>
+      )}
       {(loading || !error) && (
         <Button
           className={classes.nextQuestion}
@@ -78,9 +85,40 @@ export function PlayPage() {
           disabled={loading}
           onClick={() => getRandomQuestion()}
         >
-          ⏩ Next question
+          📜 Next question
         </Button>
       )}
     </Box>
   );
 }
+
+const useStyles = makeStyles(() => ({
+  nextQuestion: {
+    marginTop: "15px",
+    width: "100%",
+  },
+  paper: {
+    padding: "20px",
+    height: "60vh",
+    display: "flex",
+    textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  question: {
+    fontFamily: "Indie Flower, cursive;",
+    fontSize: "1.8rem",
+  },
+  questionContainer: {
+    display: "flex",
+    flex: "1 1 auto",
+    alignItems: "center",
+  },
+  date: {
+    display: "flex",
+  },
+  author: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+}));

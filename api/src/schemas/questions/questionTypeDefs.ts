@@ -34,6 +34,7 @@ export interface GameQuestion {
   id: number;
   content: string;
   createdAtUtc: string;
+  createdByName: string;
 }
 
 export interface QuestionEntity {

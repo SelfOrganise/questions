@@ -1,5 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -25,6 +26,7 @@ export const GET_QUESTIONS = gql`
 
 export function Questions() {
   const { data, error, loading } = useQuery(GET_QUESTIONS);
+  const classes = useStyles();
 
   if (loading || data == null) {
     return (
@@ -51,7 +53,7 @@ export function Questions() {
   }
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer className={classes.container} component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
@@ -68,3 +70,7 @@ export function Questions() {
     </TableContainer>
   );
 }
+
+const useStyles = makeStyles(() => ({
+  container: {},
+}));

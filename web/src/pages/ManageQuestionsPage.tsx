@@ -6,7 +6,7 @@ import { Welcome } from "../components/Welcome";
 
 export function ManageQuestionsPage() {
   return (
-    <Box padding={5}>
+    <Box paddingTop={3}>
       <Welcome />
       <AddQuestions />
       <Questions />
