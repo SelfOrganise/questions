@@ -12,6 +12,7 @@ export const bookTypeDefs = gql`
     id: Int
     content: String
     createdAtUtc: String
+    createdByName: String
   }
 
   type AddQuestionsResult {

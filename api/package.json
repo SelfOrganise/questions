@@ -11,8 +11,10 @@
   "author": "Bogdan Boiculese",
   "license": "GPLv3",
   "dependencies": {
+    "@types/auth0": "^2.33.3",
     "@types/pg": "7.14.11",
     "apollo-server-express": "2.21.1",
+    "auth0": "2.33.0",
     "body-parser": "1.19.0",
     "dotenv": "8.2.0",
     "express": "4.17.1",

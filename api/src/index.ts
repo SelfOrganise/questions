@@ -24,9 +24,13 @@ const server = new ApolloServer({
   schema,
   tracing: process.env.NODE_ENV !== "production",
   context: async ({ req }) => {
+    const bearerHeader = req.headers["authorization"];
+    const bearer = bearerHeader.split(" ");
+    const bearerToken = bearer[1];
+
     let currentUserId = -1;
     if (req.user.sub) {
-      currentUserId = await getOrCreateUser(req.user.sub);
+      currentUserId = await getOrCreateUser(req.user.sub, bearerToken);
     }
 
     return { currentUserId, user: req.user };

@@ -18,6 +18,7 @@ const RANDOM_QUESTION = gql`
       id
       content
       createdAtUtc
+      createdByName
     }
   }
 `;
@@ -39,7 +40,7 @@ export function PlayPage() {
     <Box padding={5}>
       <Grow in={true}>
         <Card key={question?.id}>
-          <CardHeader title={<Typography>test</Typography>} />
+          <CardHeader title={<Typography>{question?.createdByName}</Typography>} />
           <CardMedia>👍️</CardMedia>
           <CardContent>
             {loading && (

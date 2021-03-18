@@ -57,7 +57,7 @@ export async function getRandomQuestion(): Promise<GameQuestion> {
   const client = await pool.connect();
   const result = await client.query(
     `with filtered_questions as (
-        select q.id, q.content, q."createdAtUtc"
+        select q.id, q.content, u.name as "createdByName", q."createdAtUtc"
         from questions q
                  inner join users u on q."createdBy" = u.id
                  left join completed_questions cq on q.id = cq."questionId"
