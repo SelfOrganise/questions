@@ -2,7 +2,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import React from "react";
 import "./index.css";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import App from "./App";
 import ReactDOM from "react-dom";
 
@@ -20,9 +20,9 @@ ReactDOM.render(
       redirectUri={url}
     >
       <ThemeProvider theme={theme}>
-        <BrowserRouter basename={process.env.REACT_APP_BASENAME}>
+        <HashRouter basename={process.env.REACT_APP_BASENAME}>
           <App />
-        </BrowserRouter>
+        </HashRouter>
       </ThemeProvider>
     </Auth0Provider>
   </React.StrictMode>,

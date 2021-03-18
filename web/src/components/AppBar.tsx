@@ -50,7 +50,7 @@ export function AppBar() {
               onChange={handleTabChange}
             >
               <Tab label="⚙️ Manage" value="/" />
-              <Tab label="🕹️ Play" value="/play" />
+              {process.env.NODE_ENV !== "production" && <Tab label="🕹️ Play" value="/play" />}
             </Tabs>
           )}
         </Box>
