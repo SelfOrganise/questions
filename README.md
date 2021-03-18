@@ -19,7 +19,5 @@ Why not?
 
 Some screenshots (WIP)
 
-![image](https://user-images.githubusercontent.com/889997/111705293-604ae800-8838-11eb-9f20-48a2dc1fa16c.png)
-
-
+![image](https://user-images.githubusercontent.com/889997/111705376-7c4e8980-8838-11eb-9e17-88a524865ac8.png)
 
