@@ -8,7 +8,20 @@ import ReactDOM from "react-dom";
 
 export const url = window.location.origin + process.env.REACT_APP_BASENAME;
 
-const theme = createMuiTheme();
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#f48fb1",
+      light: "#ffc1e3",
+      dark: "#bf5f82",
+    },
+    secondary: {
+      main: "#ab47bc",
+      light: "#df78ef",
+      dark: "#790e8b",
+    },
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
