@@ -10,7 +10,6 @@ Why not?
 * `api` folder is a nodejs project that exposes a GraphQL API
 * `web` folder is a `create-react-app` project built with material-ui and apollo client
 * Both projects use typescript (badly as rules haven't been set up properly) 
-* Auth0 is used for authentication
 * Code is built and deployed with GitHub actions
   * `web` is deployed to this repository `gh-pages` branch which is setup as a github page here `https://bogdbo.github.io/questions`
   * `api` is deployed to heroku
