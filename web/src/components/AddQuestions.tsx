@@ -51,7 +51,8 @@ export function AddQuestions() {
         variant="outlined"
         multiline={true}
         rows={5}
-        label="Type in a new question"
+        label="Type in one or more questions"
+        placeholder="Multiple questions can be entered by separating them with with a new line"
         value={text}
         onChange={(ev) => setText(ev.target.value)}
       />
