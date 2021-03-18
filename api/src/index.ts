@@ -28,12 +28,14 @@ const server = new ApolloServer({
     const bearer = bearerHeader.split(" ");
     const bearerToken = bearer[1];
 
+    const user = req.user;
+
     let currentUserId = -1;
-    if (req.user.sub) {
-      currentUserId = await getOrCreateUser(req.user.sub, bearerToken);
+    if (user.sub) {
+      currentUserId = await getOrCreateUser(user.sub, bearerToken);
     }
 
-    return { currentUserId, user: req.user };
+    return { currentUserId, user };
   },
 });
 server.applyMiddleware({ app });

@@ -2,6 +2,7 @@ import {
   GameQuestion,
   QuestionEntity,
 } from "../schemas/questions/questionTypeDefs";
+import { expand } from "../utilities";
 import { pool } from "./db";
 
 export async function getQuestions(
@@ -22,19 +23,19 @@ export async function getQuestions(
 export async function addQuestions(
   questions: Array<Partial<QuestionEntity>>
 ): Promise<Array<QuestionEntity>> {
-  const insertedQuestions = [];
   const client = await pool.connect();
-  for (const question of questions) {
-    const result = await client.query(
-      'insert into questions("content", "createdBy") values ($1, $2) returning *',
-      [question.content, question.createdBy]
-    );
 
-    insertedQuestions.push(result.rows[0]);
-  }
+  const values = questions.map((q) => [q.content, q.createdBy]).flat();
+
+  const result = await client.query(
+    `insert into questions("content", "createdBy") values ${expand(
+      questions
+    )} returning *`,
+    values
+  );
 
   await client.release();
-  return insertedQuestions;
+  return result.rows;
 }
 
 export async function deleteQuestion(

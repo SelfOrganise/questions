@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useLazyQuery } from "@apollo/client";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -31,16 +31,22 @@ const useStyles = makeStyles(() => ({
 }));
 
 export function PlayPage() {
-  const { data, loading, refetch, error } = useQuery(RANDOM_QUESTION, {
-    notifyOnNetworkStatusChange: true,
-  });
+  const [getRandomQuestion, { data, loading, error, called }] = useLazyQuery(
+    RANDOM_QUESTION,
+    {
+      fetchPolicy: "network-only",
+    }
+  );
+
   const question = data?.randomQuestion;
   const classes = useStyles();
   return (
     <Box padding={5}>
       <Grow in={true}>
         <Card key={question?.id}>
-          <CardHeader title={<Typography>{question?.createdByName}</Typography>} />
+          <CardHeader
+            title={<Typography>{question?.createdByName}</Typography>}
+          />
           <CardMedia>👍️</CardMedia>
           <CardContent>
             {loading && (
@@ -50,8 +56,15 @@ export function PlayPage() {
             )}
             {!loading && !error && (
               <Box textAlign="center">
-                {!question && <Typography>No questions left 😿</Typography>}
+                {called && !question && (
+                  <Typography>No questions left 😿</Typography>
+                )}
                 {question && <Typography>{question.content}</Typography>}
+                {!called && (
+                  <Typography>
+                    Start by pressing the 'Next question' button
+                  </Typography>
+                )}
               </Box>
             )}
             {error && <Typography color="error">{error.message}</Typography>}
@@ -63,9 +76,9 @@ export function PlayPage() {
           className={classes.nextQuestion}
           color="primary"
           disabled={loading}
-          onClick={() => refetch()}
+          onClick={() => getRandomQuestion()}
         >
-          Next question
+          ⏩ Next question
         </Button>
       )}
     </Box>
