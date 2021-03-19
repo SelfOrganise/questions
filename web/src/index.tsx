@@ -10,12 +10,12 @@ export const url = window.location.origin + process.env.REACT_APP_BASENAME;
 
 const theme = createMuiTheme({
   palette: {
-    primary: {
+    secondary: {
       main: "#f48fb1",
       light: "#ffc1e3",
       dark: "#bf5f82",
     },
-    secondary: {
+    primary: {
       main: "#ab47bc",
       light: "#df78ef",
       dark: "#790e8b",
