@@ -88,11 +88,11 @@ export function PlayPage() {
           </Fade>
         </Grow>
       )}
-      {(isQuestionLoading || !error) && (
+      {(isLoading || !error) && (
         <Button
           className={classes.nextQuestion}
           color="primary"
-          disabled={isQuestionLoading}
+          disabled={isLoading}
           onClick={handleNewQuestion}
         >
           📜 Next question

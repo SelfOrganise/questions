@@ -33,8 +33,10 @@ function App() {
           </Centered>
         )}
         {!isAuthenticated && !isLoading && (
-          <Centered>
-            <Button variant="outlined" onClick={loginWithRedirect}>Click here to login</Button>
+          <Centered marginTop="30%">
+            <Button variant="outlined" onClick={loginWithRedirect}>
+              Click here to login
+            </Button>
           </Centered>
         )}
       </Container>
