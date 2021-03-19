@@ -1,9 +1,6 @@
-import {
-  GameQuestion,
-  QuestionEntity,
-} from "../schemas/questions/questionTypeDefs";
-import { expand } from "../utilities";
-import { pool } from "./db";
+import { GameQuestion, QuestionEntity, } from '../schemas/questions/questionTypeDefs';
+import { expand } from '../utilities';
+import { pool } from './db';
 
 export async function getQuestions(
   userId: number
@@ -54,9 +51,20 @@ export async function deleteQuestion(
   return result.rowCount > 0;
 }
 
-export async function getRandomQuestion(
-  currentUserId: number
-): Promise<GameQuestion> {
+export async function completeQuestion(
+  currentUserId: number,
+  questionId: number
+) {
+  const client = await pool.connect();
+  await client.query(
+    `insert into completed_questions("questionId", "completedBy")
+       values ($1, $2)`,
+    [questionId, currentUserId]
+  );
+  client.release();
+}
+
+export async function getRandomQuestion(): Promise<GameQuestion> {
   const client = await pool.connect();
   const result = await client.query(
     `with filtered_questions as (
@@ -70,15 +78,7 @@ export async function getRandomQuestion(
      offset floor(random() * (select count(*) from filtered_questions)) limit 1
     `
   );
-  const question = result.rows[0];
-  if (question) {
-    await client.query(
-      `insert into completed_questions("questionId", "completedBy")
-       values ($1, $2)`,
-      [question.id, currentUserId]
-    );
-  }
-  await client.release();
 
-  return question;
+  await client.release();
+  return result.rows[0];
 }

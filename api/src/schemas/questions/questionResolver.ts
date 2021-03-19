@@ -1,6 +1,7 @@
 import { ForbiddenError } from "apollo-server-express";
 import {
   addQuestions,
+  completeQuestion,
   deleteQuestion,
   getQuestions,
   getRandomQuestion,
@@ -14,14 +15,18 @@ export const questionResolver = {
 
     randomQuestion: async (
       parent: never,
-      args: never,
+      args: { lastCompletedQuestionId?: number },
       { user, currentUserId }: any
     ) => {
       if (!user.permissions.includes("start:questions")) {
         throw new ForbiddenError("You do not have permissions to access this");
       }
 
-      return await getRandomQuestion(currentUserId);
+      if (args?.lastCompletedQuestionId) {
+        await completeQuestion(currentUserId, args.lastCompletedQuestionId);
+      }
+
+      return await getRandomQuestion();
     },
   },
 

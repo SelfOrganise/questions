@@ -1,7 +1,7 @@
 import { gql, useLazyQuery } from "@apollo/client";
-import { Fade, Typography } from "@material-ui/core";
+import { Fab, Fade, Typography } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
@@ -15,8 +15,8 @@ import { toRelativeTime } from "../utilities/time";
 import { usePreloadedStyle } from "../utilities/usePreloadedStyle";
 
 const RANDOM_QUESTION = gql`
-  query getRandomQuestion {
-    randomQuestion {
+  query getRandomQuestion($lastCompletedQuestionId: Int) {
+    randomQuestion(lastCompletedQuestionId: $lastCompletedQuestionId) {
       id
       content
       createdAtUtc
@@ -37,15 +37,19 @@ export function PlayPage() {
   const classes = useStyles();
   const { isImageLoading, style, getNewStyle } = usePreloadedStyle();
 
-  const handleNewQuestion = () => {
+  const handleNewQuestion = (lastCompletedQuestionId?: number) => {
     getNewStyle();
-    getRandomQuestion();
+    getRandomQuestion({
+      variables: {
+        lastCompletedQuestionId,
+      },
+    });
   };
 
   const isLoading = isQuestionLoading || isImageLoading;
 
   if (!called) {
-    return <NotStarted onClick={handleNewQuestion} />;
+    return <NotStarted onClick={() => handleNewQuestion()} />;
   }
 
   if (error) {
@@ -89,24 +93,30 @@ export function PlayPage() {
         </Grow>
       )}
       {(isLoading || !error) && (
-        <Button
-          className={classes.nextQuestion}
-          color="primary"
-          disabled={isLoading}
-          onClick={handleNewQuestion}
-        >
-          📜 Next question
-        </Button>
+        <Box display="flex" justifyContent="space-between" marginTop="25px">
+          <Fab
+            color="default"
+            disabled={isLoading}
+            onClick={() => handleNewQuestion()}
+          >
+            Skip
+          </Fab>
+          <Fab
+            color="primary"
+            disabled={isLoading}
+            variant="extended"
+            onClick={() => handleNewQuestion(question.id)}
+          >
+            <NavigateNextIcon />
+            Next question
+          </Fab>
+        </Box>
       )}
     </Box>
   );
 }
 
 const useStyles = makeStyles(() => ({
-  nextQuestion: {
-    marginTop: "15px",
-    width: "100%",
-  },
   background: {
     height: "100%",
     width: "100%",
@@ -117,7 +127,7 @@ const useStyles = makeStyles(() => ({
   },
   paper: {
     position: "relative",
-    padding: "20px",
+    padding: "10px",
     height: "60vh",
     display: "flex",
     textAlign: "center",

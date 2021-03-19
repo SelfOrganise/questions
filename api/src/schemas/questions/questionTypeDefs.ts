@@ -21,7 +21,7 @@ export const bookTypeDefs = gql`
 
   type Query {
     questions(content: String): [Question]
-    randomQuestion: GameQuestion
+    randomQuestion(lastCompletedQuestionId: Int): GameQuestion
   }
 
   type Mutation {
