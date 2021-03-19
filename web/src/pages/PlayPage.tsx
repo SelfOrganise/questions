@@ -12,6 +12,7 @@ import { ErrorMessage } from "../components/PlayPage/ErrorMessage";
 import { NoQuestionsLeft } from "../components/PlayPage/NoQuestionsLeft";
 import { NotStarted } from "../components/PlayPage/NotStarted";
 import { toRelativeTime } from "../utilities/time";
+import { usePreloadedStyle } from "../utilities/usePreloadedStyle";
 
 const RANDOM_QUESTION = gql`
   query getRandomQuestion {
@@ -25,39 +26,48 @@ const RANDOM_QUESTION = gql`
 `;
 
 export function PlayPage() {
-  const [getRandomQuestion, { data, loading, error, called }] = useLazyQuery(
-    RANDOM_QUESTION,
-    {
-      fetchPolicy: "network-only",
-    }
-  );
+  const [
+    getRandomQuestion,
+    { data, loading: isQuestionLoading, error, called },
+  ] = useLazyQuery(RANDOM_QUESTION, {
+    fetchPolicy: "network-only",
+  });
 
   const question = data?.randomQuestion;
   const classes = useStyles();
+  const { isImageLoading, style, getNewStyle } = usePreloadedStyle();
+
+  const handleNewQuestion = () => {
+    getNewStyle();
+    getRandomQuestion();
+  };
+
+  const isLoading = isQuestionLoading || isImageLoading;
 
   if (!called) {
-    return <NotStarted onClick={getRandomQuestion} />;
+    return <NotStarted onClick={handleNewQuestion} />;
   }
 
   if (error) {
     return <ErrorMessage message={error.message} />;
   }
 
-  if (called && !loading && !question) {
+  if (called && !isLoading && !question) {
     return <NoQuestionsLeft />;
   }
 
   return (
     <Box paddingTop={4} paddingLeft={2} paddingRight={2}>
-      {loading && (
+      {isLoading && (
         <Centered className={classes.paper} marginTop={0}>
           <CircularProgress />
         </Centered>
       )}
-      {!loading && question && (
+      {!isLoading && question && (
         <Grow timeout={1000} in={true}>
           <Fade timeout={1000} in={true}>
             <Paper className={classes.paper} elevation={4}>
+              <div style={style} className={classes.background} />
               <Box
                 height="100%"
                 display="flex"
@@ -78,12 +88,12 @@ export function PlayPage() {
           </Fade>
         </Grow>
       )}
-      {(loading || !error) && (
+      {(isQuestionLoading || !error) && (
         <Button
           className={classes.nextQuestion}
           color="primary"
-          disabled={loading}
-          onClick={() => getRandomQuestion()}
+          disabled={isQuestionLoading}
+          onClick={handleNewQuestion}
         >
           📜 Next question
         </Button>
@@ -97,7 +107,16 @@ const useStyles = makeStyles(() => ({
     marginTop: "15px",
     width: "100%",
   },
+  background: {
+    height: "100%",
+    width: "100%",
+    opacity: "0.15",
+    position: "absolute",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+  },
   paper: {
+    position: "relative",
     padding: "20px",
     height: "60vh",
     display: "flex",
