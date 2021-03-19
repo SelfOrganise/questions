@@ -8,6 +8,7 @@ node_modules/
 # testing
 coverage
 .env
+.env.local
 
 # production
 build
