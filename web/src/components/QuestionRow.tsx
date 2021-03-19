@@ -51,7 +51,7 @@ export function QuestionRow({ question }: { question: Question }) {
   return (
     <TableRow>
       <TableCell align="left">{question.content}</TableCell>
-      <TableCell align="right">
+      <TableCell padding="none" align="right">
         <IconButton disabled={!canDelete} onClick={handleDeleteClick}>
           {canDelete ? <DeleteOutlinedIcon /> : <CircularProgress size="1em" />}
         </IconButton>
