@@ -28,5 +28,6 @@ v0.0.1
 
 ![image](https://user-images.githubusercontent.com/889997/111705376-7c4e8980-8838-11eb-9e17-88a524865ac8.png)
 
-
+#### License
+GPLv3
 
