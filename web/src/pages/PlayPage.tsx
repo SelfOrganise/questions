@@ -61,7 +61,7 @@ export function PlayPage() {
   }
 
   return (
-    <Box paddingTop={4} paddingLeft={2} paddingRight={2}>
+    <Box paddingTop={3} paddingLeft={2} paddingRight={2}>
       {isLoading && (
         <Centered className={classes.paper} marginTop={0}>
           <CircularProgress />
@@ -129,8 +129,9 @@ const useStyles = makeStyles(() => ({
   paper: {
     position: "relative",
     padding: "10px",
-    height: "60vh",
+    minHeight: "60vh",
     display: "flex",
+    flexDirection: "column",
     textAlign: "center",
     alignItems: "center",
     justifyContent: "center",
