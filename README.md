@@ -15,9 +15,16 @@ Why not?
   * `api` is deployed to heroku
 * Authentication and authorization are done with Auth0 and it's ootb roles / permissions functionalities
 * Data is persisted in a free PostgreSQL database (ElephantSQL)
-* There are loads of things missing and the code is of poor quality
+* Images are from unsplash public API
+* There are loads of things missing and the code is questionable quality
 
 Some screenshots (WIP)
 
-![image](https://user-images.githubusercontent.com/889997/111705376-7c4e8980-8838-11eb-9e17-88a524865ac8.png)
+v0.0.2
+![image](https://user-images.githubusercontent.com/889997/111865259-e14fcf80-895d-11eb-8591-5605a527fc06.png)
+
+v0.0.1
+![image](https://user-images.githubusercontent.com/889997/111865245-c4b39780-895d-11eb-9fe2-07beff30d57b.png)
+
+
 
