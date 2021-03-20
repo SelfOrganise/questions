@@ -9,5 +9,5 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Run a one-line script
+      - name: Call GraphQL endpoint
         run: curl -I https://bogdbo-questions-api.herokuapp.com/graphql
