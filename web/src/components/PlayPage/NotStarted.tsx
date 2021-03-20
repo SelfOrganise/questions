@@ -4,7 +4,7 @@ import { Centered } from "../Centered";
 
 export function NotStarted({ onClick }: { onClick: () => void }) {
   return (
-    <Centered marginTop="30%">
+    <Centered marginTop="45vh">
       <Button variant="contained" onClick={onClick}>
         Start
       </Button>

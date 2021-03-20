@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-const baseUrl =
-  `https://source.unsplash.com/featured/400x520/?${process.env.REACT_APP_UNSPLASH_KEYWORDS}`;
+const baseUrl = `https://source.unsplash.com/400x520/?${process.env.REACT_APP_UNSPLASH_KEYWORDS}`;
 
 export function usePreloadedStyle() {
   const [isImageLoading, setIsImageLoading] = useState(true);

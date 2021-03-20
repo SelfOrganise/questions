@@ -96,6 +96,7 @@ export function PlayPage() {
         <Box display="flex" justifyContent="space-between" marginTop="25px">
           <Fab
             color="default"
+            variant="extended"
             disabled={isLoading}
             onClick={() => handleNewQuestion()}
           >
