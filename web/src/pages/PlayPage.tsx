@@ -74,6 +74,7 @@ export function PlayPage() {
               <div style={style} className={classes.background} />
               <Box
                 height="100%"
+                width="100%"
                 display="flex"
                 flexDirection="column"
                 flexGrow="1"
@@ -100,7 +101,7 @@ export function PlayPage() {
             disabled={isLoading}
             onClick={() => handleNewQuestion()}
           >
-            Skip
+            Skip for later
           </Fab>
           <Fab
             color="primary"
@@ -109,7 +110,7 @@ export function PlayPage() {
             onClick={() => handleNewQuestion(question.id)}
           >
             <NavigateNextIcon />
-            Next question
+            Mark as done
           </Fab>
         </Box>
       )}
@@ -121,7 +122,7 @@ const useStyles = makeStyles(() => ({
   background: {
     height: "100%",
     width: "100%",
-    opacity: "0.15",
+    opacity: "0.4",
     position: "absolute",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
