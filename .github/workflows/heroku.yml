@@ -2,12 +2,12 @@
 name: Keep API alive
 on:
  schedule:
-   - cron: '*/30 * * * *'
+   - cron: '*/30 9-22 * * *'
  workflow_dispatch:
  
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Run a one-line script
+      - name: Call GraphQL endpoint
         run: curl -I https://bogdbo-questions-api.herokuapp.com/graphql
