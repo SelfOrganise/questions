@@ -2,7 +2,7 @@
 
 ### Tiny project to store and play back questions.
 #### Why?
-Why not?
+Why not? 
 
 #### Technical
 [![CI/CD](https://github.com/bogdbo/questions/actions/workflows/web.yml/badge.svg?branch=master)](https://github.com/bogdbo/questions/actions/workflows/web.yml)
