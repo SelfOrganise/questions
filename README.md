@@ -1,4 +1,4 @@
-# ⁉️ Questions ⁉️ 
+# ⁉️ Questions ⁉️ ^
 
 ### Tiny project to store and play back questions.
 #### Why?
