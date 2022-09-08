@@ -1,8 +1,8 @@
 import { ApolloServer } from "apollo-server-express";
-import * as express from "express";
+import express from "express";
 import { getOrCreateUser } from "./repository/users";
 import { schema } from "./schemas";
-import * as jwt from "express-jwt";
+import jwt from "express-jwt";
 import * as jwksRsa from "jwks-rsa";
 
 const checkJwt = jwt({
@@ -23,7 +23,7 @@ app.use(checkJwt);
 const server = new ApolloServer({
   schema,
   tracing: process.env.NODE_ENV !== "production",
-  context: async ({ req }) => {
+  context: async ({ req }: any) => {
     const bearerHeader = req.headers["authorization"];
     const bearer = bearerHeader.split(" ");
     const bearerToken = bearer[1];

@@ -9,7 +9,7 @@ import {
 
 export const questionResolver = {
   Query: {
-    questions: async (_: never, args: never, { currentUserId }) => {
+    questions: async (_: never, args: never, { currentUserId }: any) => {
       return await getQuestions(currentUserId);
     },
 
@@ -34,7 +34,7 @@ export const questionResolver = {
     addQuestions: async (
       _: never,
       args: { questions: Array<string> },
-      { currentUserId }
+      { currentUserId }: any
     ) => {
       const newQuestions = args.questions.map((q) => ({
         createdBy: currentUserId,
@@ -47,7 +47,7 @@ export const questionResolver = {
     deleteQuestion: async (
       _: never,
       args: { id: number },
-      { currentUserId }
+      { currentUserId } : any
     ) => {
       return await deleteQuestion(args.id, currentUserId);
     },
