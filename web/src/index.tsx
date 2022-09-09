@@ -33,7 +33,7 @@ ReactDOM.render(
       redirectUri={url}
     >
       <ThemeProvider theme={theme}>
-        <HashRouter basename={process.env.REACT_APP_BASENAME}>
+        <HashRouter>
           <App />
         </HashRouter>
       </ThemeProvider>
