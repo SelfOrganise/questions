@@ -6,7 +6,7 @@ import { HashRouter } from "react-router-dom";
 import App from "./App";
 import ReactDOM from "react-dom";
 
-export const url = window.location.origin + process.env.REACT_APP_BASENAME;
+export const url = window.location.origin;
 
 const theme = createMuiTheme({
   palette: {
@@ -33,7 +33,7 @@ ReactDOM.render(
       redirectUri={url}
     >
       <ThemeProvider theme={theme}>
-        <HashRouter basename={process.env.REACT_APP_BASENAME}>
+        <HashRouter>
           <App />
         </HashRouter>
       </ThemeProvider>
