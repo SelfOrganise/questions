@@ -20,8 +20,8 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: docker build -t ${{ secrets.DOCKER_IMAGE_NAME }}:${{ github.run_number }} .
-      - run: docker push ${{ secrets.DOCKER_IMAGE_NAME }}:${{ github.run_number }}
+      - run: docker build -t ${{ secrets.DOCKER_IMAGE_NAME }}:${{ github.run_number }} ${{ secrets.DOCKER_IMAGE_NAME }}:latest .
+      - run: docker push ${{ secrets.DOCKER_IMAGE_NAME }} --all-tags
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v0.1.5
         with:
@@ -30,26 +30,4 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            podman container kill ${{ env.appName }} 
-            podman container rm ${{ env.appName }}
-
-            podman image prune -af
-            podman image pull ${{ secrets.DOCKER_IMAGE_NAME }}:${{ github.run_number }}
-
-            mkdir -p ${{ env.appName }}
-            cd ${{ env.appName }}
-
-            podman run \
-              --name ${{ env.appName }} \
-              -p 4000:3000 \
-              --restart unless-stopped \
-              --env "NODE_ENV=production" \
-              --env "DB_DATABASE=${{ secrets.DB_DATABASE }}" \
-              --env "AUTH_CLIENT_ID=${{ secrets.AUTH_CLIENT_ID }}" \
-              --env "AUTH_CLIENT_SECRET=${{ secrets.AUTH_CLIENT_SECRET }}" \
-              --env "AUTH_DOMAIN=${{ secrets.AUTH_DOMAIN }}" \
-              --env "DB_HOST=${{ secrets.DB_HOST }}" \
-              --env "DB_PORT=${{ secrets.DB_PORT }}" \
-              --env "DB_USER=${{ secrets.DB_USER }}" \
-              --env "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" \
-              -d ${{ secrets.DOCKER_IMAGE_NAME }}:${{ github.run_number }}
+            podman auto-update
